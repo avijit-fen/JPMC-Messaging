@@ -33,7 +33,11 @@ namespace Messaging.ServiceHandler
         {
             foreach (var pair in regexes)
             {
-                var match = pair.Value.Match(msg.Message);
+                if(string.IsNullOrEmpty(msg.Message))
+                {
+                    return null;
+                }
+                var match = pair.Value.Match(ToLower(msg.Message));
                 if (match.Success)
                 {
                     return Calculate(pair.Key, match.Groups,msg.MsgCorelationId);
@@ -48,7 +52,7 @@ namespace Messaging.ServiceHandler
         /// <returns></returns>
         private string ToLower(string s)
         {
-            return s.ToLower();
+            return string.IsNullOrEmpty(s) ? string.Empty : s.ToLower();
         }
         /// <summary>
         /// Format tradetype 
@@ -71,11 +75,11 @@ namespace Messaging.ServiceHandler
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        private double Parse(string s)
+        private decimal Parse(string s)
         {
             if (string.IsNullOrEmpty(s)) { return 0; }
-            double res = 0;
-            if (double.TryParse(s, out res)) { return res; }
+            decimal res = 0;
+            if (decimal.TryParse(s, out res)) { return res; }
 
             return res;
         }

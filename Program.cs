@@ -73,12 +73,12 @@ namespace Messaging
              EventBus eventBus = EventBus.Instance;
              ILogger logger = new Logger();
 
-            if (e.Count > 0 && e.Count % 2 == 0)
+            if (e.Count > 0 && e.Count % 10 == 0)
             {
                 var r = new ReportEvent() { ServiceOperation = Constants.TRANSACTIONREPORT };
                 eventBus.Trigger(r, HandlerFactory.ReportAction, null, null);
             }
-            if (e.Count == 5)
+            if (e.Count == 50)
             {
                 logger.Info("Pausing");
                 var r = new ReportEvent() { ServiceOperation = Constants.TRANSACTIONADJUSTREPORT };

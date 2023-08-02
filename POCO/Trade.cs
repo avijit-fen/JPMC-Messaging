@@ -14,13 +14,13 @@ namespace Messaging.POCO
 
         public Guid SalesId { get; set; }
         public string TradeType{ get; set; }
-        public double Value { get; set; }
+        public decimal Value { get; set; }
         public bool Adjusted { get; set; }
         public int TradeQuantity { get; set; }
-        public double DeltaAdjustment { get; set; }
-        public double UnitPrice { get; set; }
+        public decimal DeltaAdjustment { get; set; }
+        public decimal UnitPrice { get; set; }
         public string Operation { get; set; }
-        public double InitialValue { get; set; }
+        public decimal InitialValue { get; set; }
 
 
     }
@@ -31,9 +31,9 @@ namespace Messaging.POCO
         public string Operation { get; set; }
         public string TradeType { get; set; }
         public int TradeQuantity { get; set; }
-        public double Value { get; set; }
+        public decimal Value { get; set; }
         public bool IsAdjustMent { get; set; }
-        public double UnitPrice { get; set; }
+        public decimal UnitPrice { get; set; }
         public Guid MsgCorelationId { get; set; }
         public string ServiceOperation { get; set; }
     }

@@ -15,10 +15,12 @@ namespace Messaging.ServiceHandler
     {
         IEventBus _eventBus { get; set; }
         ILogger _logger;
+        int _salesdecimal;
         public TradeReportHandler(ILogger logger , IEventBus eventBus)
         {
             _eventBus = eventBus;
             _logger = logger;
+            _salesdecimal = int.Parse(Config.GetValue("SalesDecimal"));
         }
         /// <summary>
         /// execute 
@@ -42,7 +44,7 @@ namespace Messaging.ServiceHandler
                         {
                             Count = cl.Sum(c => c.TradeQuantity),
                             TradeType = cl.First().TradeType,
-                            Sales = cl.Sum(c => c.Value),
+                            Sales = Math.Round(cl.Sum(c => c.Value),_salesdecimal),
                         }).ToList();
 
                     _logger.Info("Trade Reports");
@@ -70,7 +72,7 @@ namespace Messaging.ServiceHandler
                             {
                                 Id = cl.SalesId,
                                 TradeType = cl.TradeType,
-                                SalesAdjustMents = cl.DeltaAdjustment
+                                SalesAdjustMents = Math.Round(cl.DeltaAdjustment,_salesdecimal)
                             }).ToList();
 
                     if (tardeAdjustmentresult.Count == 0)

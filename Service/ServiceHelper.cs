@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Messaging.ServiceHandler;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,25 @@ namespace Messaging.Repository
 {
     public static class ServiceHelper
     {
-        public static double CalculateSales(string operation, double unitPrice , double salesQuantity , double adjustment)
+
+        static int _decimalPrecision;
+
+        static ServiceHelper()
         {
-            double salesVal = 0;
+            _decimalPrecision = int.Parse(Config.GetValue("SalesDecimal"));
+        }
+
+        /// <summary>
+        /// calculates sales limiting to 5 decimal places
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <param name="unitPrice"></param>
+        /// <param name="salesQuantity"></param>
+        /// <param name="adjustment"></param>
+        /// <returns></returns>
+        public static decimal CalculateSales(string operation, decimal unitPrice , int salesQuantity , decimal adjustment)
+        {
+            decimal salesVal = 0;
             switch (operation)
             {
                 case "add":
@@ -20,18 +37,24 @@ namespace Messaging.Repository
                     salesVal = (unitPrice * adjustment) * salesQuantity;
                     break;
                 case "substract":
-                    salesVal = (unitPrice - adjustment) * salesQuantity;
+                    salesVal = unitPrice > adjustment ? ((unitPrice - adjustment) * salesQuantity) : 0;
                     break;
                 default:
                     break;
             }
 
-            return salesVal;
+            return salesVal > 0 ? Math.Round(salesVal, _decimalPrecision) : salesVal;
         }
-
-        public static double CalculateUnitPrice(string operation, double unitPrice, double adjustment)
+        /// <summary>
+        /// calculate new unit price limiting to 5 decmal places
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <param name="unitPrice"></param>
+        /// <param name="adjustment"></param>
+        /// <returns></returns>
+        public static decimal CalculateUnitPrice(string operation, decimal unitPrice, decimal adjustment)
         {
-            double salesVal = 0;
+            decimal salesVal = 0;
             switch (operation)
             {
                 case "add":
@@ -47,7 +70,7 @@ namespace Messaging.Repository
                     break;
             }
 
-            return salesVal;
+            return salesVal > 0 ? Math.Round(salesVal, _decimalPrecision) : salesVal;
         }
 
 
