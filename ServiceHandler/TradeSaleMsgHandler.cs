@@ -27,7 +27,7 @@ namespace Messaging.ServiceHandler
             var TradeDomainObject = helper.Parse(args);
             if (TradeDomainObject == null)
             {
-                _logger.Warn("Message not in correct format:" + args.Message);
+                _logger.Warn("Message not in correct format:" + args.MsgCorelationId + " " + args.Message);
                 errorCallBack(new MessageEventErrorReponse() { MsgCorelationId = args.MsgCorelationId, ErrorMessage = "Message Parsing Error" });
             }
             else {
