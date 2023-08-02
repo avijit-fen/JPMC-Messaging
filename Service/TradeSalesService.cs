@@ -41,10 +41,25 @@ namespace Messaging.Service
 
             foreach (var trade in sales)
             {
+                if(trade.TradeSalesHistory == null)
+                {
+                    trade.TradeSalesHistory = new List<TradeSalesHistory>();
+                }
+                trade.TradeSalesHistory.Add(new TradeSalesHistory()
+                {
+                    TradeType = trade.TradeType,
+                    SalesId = trade.SalesId,
+                    InitialValue = trade.InitialValue,
+                    UnitPrice = trade.UnitPrice,
+                    Value = trade.Value,
+                    Revision = trade.Revision
+
+                });
                 decimal adjustedVal = ServiceHelper.CalculateSales(tradesales.Operation, trade.UnitPrice, trade.TradeQuantity, tradesales.Value);
                 trade.DeltaAdjustment = adjustedVal - trade.InitialValue;
                 trade.Value = adjustedVal;
                 trade.Adjusted = true;
+                trade.Revision = trade.Revision + 1;
                 trade.UnitPrice = ServiceHelper.CalculateUnitPrice(tradesales.Operation, trade.UnitPrice, tradesales.Value);
             }
 

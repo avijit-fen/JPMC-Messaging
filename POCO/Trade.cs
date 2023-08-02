@@ -21,10 +21,23 @@ namespace Messaging.POCO
         public decimal UnitPrice { get; set; }
         public string Operation { get; set; }
         public decimal InitialValue { get; set; }
+        public int Revision { get; set; }
+        public List<TradeSalesHistory> TradeSalesHistory { get; set; }
 
 
     }
 
+    public class TradeSalesHistory
+    {
+        public Guid SalesId { get; set; }
+        public string TradeType { get; set;}
+        public decimal Value { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal InitialValue { get; set; }
+
+        public int Revision { get; set; }
+
+    }
     
     public class TradeEvent:IEvent
     {
