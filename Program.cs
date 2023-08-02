@@ -15,7 +15,7 @@ namespace Messaging
 {
     public class Program
     {
-
+        static ILogger logger = new Logger();
         static void Main(string[] args)
         {
             
@@ -30,7 +30,7 @@ namespace Messaging
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                logger.Error("Error Occured",ex);
             }
             
         }
@@ -71,14 +71,17 @@ namespace Messaging
         private static void Broker_OnMessage(object sender, NotificationEventArgBroker e)
         {
              EventBus eventBus = EventBus.Instance;
-             ILogger logger = new Logger();
+             
 
-            if (e.Count > 0 && e.Count % 10 == 0)
+            int reportingInterval = int.Parse(Config.GetValue("reportingInterval"));
+            int pausingInterval = int.Parse(Config.GetValue("PauseInterval"));
+
+            if (e.Count > 0 && e.Count % reportingInterval == 0)
             {
                 var r = new ReportEvent() { ServiceOperation = Constants.TRANSACTIONREPORT };
                 eventBus.Trigger(r, HandlerFactory.ReportAction, null, null);
             }
-            if (e.Count == 50)
+            if (e.Count == pausingInterval)
             {
                 logger.Info("Pausing");
                 var r = new ReportEvent() { ServiceOperation = Constants.TRANSACTIONADJUSTREPORT };
