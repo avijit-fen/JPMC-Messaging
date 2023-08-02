@@ -19,5 +19,9 @@ namespace Messaging.POCO
 
     }
 
-    public interface ITradeSalesRepository : IRepository<TradeSales> { }
+    public interface ITradeSalesRepository : IRepository<TradeSales> { 
+    
+        void Update(List<TradeSales> tradeSales);
+    
+    }
 }

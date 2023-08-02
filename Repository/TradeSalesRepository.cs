@@ -28,24 +28,24 @@ namespace Messaging.Repository
 
         public void Update(TradeSales tradesales)
         {
-            var totaltradesales = _tradesalesDbctx.TradeSales;
-            var sales = totaltradesales.Where(p => p.TradeType == tradesales.TradeType);
-            
-            foreach (var trade in sales)
+            var trades = _tradesalesDbctx.TradeSales;
+            var sales = trades.Find(p => p.SalesId == tradesales.SalesId);
+            if(sales != null)
             {
-                var adjustedVal = RepositoryHelper.CalculateSales(tradesales.Operation, trade.UnitPrice, trade.TradeQuantity, tradesales.Value);
-                trade.DeltaAdjustment = adjustedVal - trade.InitialValue;
-                trade.Value = adjustedVal;
-                trade.Adjusted = true;
-                trade.UnitPrice = RepositoryHelper.CalculateUnitPrice(tradesales.Operation,trade.UnitPrice, tradesales.Value);
+                sales.Value = tradesales.Value;
             }
-            _tradesalesDbctx.TradeSales = totaltradesales;
+            _tradesalesDbctx.TradeSales = trades;
 
         }
 
         public List<TradeSales> GetAll()
         {
             return _tradesalesDbctx.TradeSales;
+        }
+
+        public void Update(List<TradeSales> tradeSales)
+        {
+            _tradesalesDbctx.TradeSales = tradeSales;
         }
     }
 }

@@ -19,9 +19,9 @@ namespace Messaging.ServiceHandler
         public SalesHelper() {
 
             regexes = new Dictionary<string, Regex>();
-            regexes.Add("SINGLESALE", new Regex("^(\\w+)\\s+at\\s+(\\d+)[pP]$"));
-            regexes.Add("MULTIPLESALE", new Regex("^(\\d+) sales of (\\w+) at (\\d+)p each$"));
-            regexes.Add("ADJUSTMENT", new Regex("(\\w+) (\\d+)p (\\w+)"));
+            regexes.Add("SINGLESALE", new Regex(Config.GetValue("SINGLESALE")));
+            regexes.Add("MULTIPLESALE", new Regex(Config.GetValue("MULTIPLESALE")));
+            regexes.Add("ADJUSTMENT", new Regex(Config.GetValue("ADJUSTMENT")));
 
         }
         /// <summary>
@@ -67,6 +67,20 @@ namespace Messaging.ServiceHandler
             return type;
         }
         /// <summary>
+        /// Parse to double
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        private double Parse(string s)
+        {
+            if (string.IsNullOrEmpty(s)) { return 0; }
+            double res = 0;
+            if (double.TryParse(s, out res)) { return res; }
+
+            return res;
+        }
+
+        /// <summary>
         /// actual method to create tradevent
         /// </summary>
         /// <param name="key"></param>
@@ -83,8 +97,8 @@ namespace Messaging.ServiceHandler
                 {
                     Operation = "addsingle",
                     TradeType = FormatTradeType(groups[1].Value),
-                    Value = int.Parse(groups[2].Value),
-                    UnitPrice = int.Parse(groups[2].Value),
+                    Value = Parse(groups[2].Value),
+                    UnitPrice = Parse(groups[2].Value),
                     TradeQuantity = 1,
                     MsgCorelationId = msgId,
                     ServiceOperation = "Add"
@@ -96,8 +110,8 @@ namespace Messaging.ServiceHandler
                 {
                     Operation = "addmultiple",
                     TradeType = FormatTradeType(groups[2].Value),
-                    Value = int.Parse(groups[3].Value) * int.Parse(groups[1].Value),
-                    UnitPrice = int.Parse(groups[3].Value),
+                    Value = Parse(groups[3].Value) * Parse(groups[1].Value),
+                    UnitPrice = Parse(groups[3].Value),
                     TradeQuantity = int.Parse(groups[1].Value),
                     MsgCorelationId = msgId,
                     ServiceOperation = "Add"
@@ -108,8 +122,8 @@ namespace Messaging.ServiceHandler
                 sale = new TradeEvent()
                 {
                     Operation = ToLower(groups[1].Value),
-                    TradeType = FormatTradeType(groups[3].Value),
-                    Value = int.Parse(groups[2].Value),
+                    TradeType = FormatTradeType(groups[4].Value),
+                    Value = Parse(groups[2].Value),
                     IsAdjustMent = true,
                     MsgCorelationId = msgId,
                     ServiceOperation = "Update"

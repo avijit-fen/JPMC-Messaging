@@ -67,9 +67,10 @@
     <Compile Include="ServiceHandler\TradeSalesMsgHandlerTests.cs" />
     <Compile Include="ServiceHandler\MessageHandlerTests.cs" />
     <Compile Include="ServiceHandler\SalesHelperTests.cs" />
+    <Compile Include="Service\ServiceHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Messaging\Messaging.csproj">
+    <ProjectReference Include="..\Messaging.csproj">
       <Project>{7F59F0F6-5EC2-402C-96C6-EB4ACDD2333E}</Project>
       <Name>Messaging</Name>
     </ProjectReference>

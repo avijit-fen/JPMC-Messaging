@@ -36,6 +36,18 @@ namespace Messaging.Service
 
         public void Update(TradeSales tradesales)
         {
+            var tradeSales = _repository.GetAll();
+            var sales = tradeSales.Where(p => p.TradeType == tradesales.TradeType);
+
+            foreach (var trade in sales)
+            {
+                double adjustedVal = ServiceHelper.CalculateSales(tradesales.Operation, trade.UnitPrice, trade.TradeQuantity, tradesales.Value);
+                trade.DeltaAdjustment = adjustedVal - trade.InitialValue;
+                trade.Value = adjustedVal;
+                trade.Adjusted = true;
+                trade.UnitPrice = ServiceHelper.CalculateUnitPrice(tradesales.Operation, trade.UnitPrice, tradesales.Value);
+            }
+
             _repository.Update(tradesales);
         }
     }

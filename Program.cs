@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Messaging
 {
-    internal class Program
+    public class Program
     {
 
         static void Main(string[] args)
@@ -40,6 +40,7 @@ namespace Messaging
             Exception e = (Exception)args.ExceptionObject;
             Console.WriteLine("ExceptionHandler caught : " + e.Message);
             Console.WriteLine("Runtime terminating: {0}", args.IsTerminating);
+            Console.ReadLine();
         }
 
         private static void Initialize(List<string> msgs)
@@ -72,12 +73,12 @@ namespace Messaging
              EventBus eventBus = EventBus.Instance;
              ILogger logger = new Logger();
 
-            if (e.Count > 0 && e.Count % 10 == 0)
+            if (e.Count > 0 && e.Count % 2 == 0)
             {
                 var r = new ReportEvent() { ServiceOperation = Constants.TRANSACTIONREPORT };
                 eventBus.Trigger(r, HandlerFactory.ReportAction, null, null);
             }
-            if (e.Count == 50)
+            if (e.Count == 5)
             {
                 logger.Info("Pausing");
                 var r = new ReportEvent() { ServiceOperation = Constants.TRANSACTIONADJUSTREPORT };

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Messaging.Repository
 {
-    internal static class RepositoryHelper
+    public static class ServiceHelper
     {
-        public static int CalculateSales(string operation, int unitPrice , int salesQuantity , int adjustment)
+        public static double CalculateSales(string operation, double unitPrice , double salesQuantity , double adjustment)
         {
-            int salesVal = 0;
+            double salesVal = 0;
             switch (operation)
             {
                 case "add":
@@ -29,9 +29,9 @@ namespace Messaging.Repository
             return salesVal;
         }
 
-        public static int CalculateUnitPrice(string operation, int unitPrice, int adjustment)
+        public static double CalculateUnitPrice(string operation, double unitPrice, double adjustment)
         {
-            int salesVal = 0;
+            double salesVal = 0;
             switch (operation)
             {
                 case "add":
@@ -41,7 +41,7 @@ namespace Messaging.Repository
                     salesVal = unitPrice * adjustment;
                     break;
                 case "substract":
-                    salesVal = unitPrice - adjustment;
+                    salesVal = unitPrice >= adjustment ? (unitPrice - adjustment) : 0;
                     break;
                 default:
                     break;

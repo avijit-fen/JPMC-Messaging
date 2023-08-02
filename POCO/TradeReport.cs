@@ -14,14 +14,14 @@ namespace Messaging.POCO
         public Guid Id { get; set; }
         public int Count { get; set; }
         public string TradeType { get; set; }
-        public int Sales { get; set; }
+        public double Sales { get; set; }
     }
 
     public class TradeAdjustmentReport
     {
         public Guid Id { get; set; }
         public string TradeType { get; set; }
-        public int SalesAdjustMents { get; set; }
+        public double SalesAdjustMents { get; set; }
     }
 
 
