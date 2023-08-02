@@ -34,7 +34,7 @@ namespace Messaging.ServiceHandler
 
         public static Action<string, IEvent, Action<IEventReponse>, Action<IEventErrorResponse>> TradeMessageAction = (e, v, w, y) =>
         {
-            new TradeSaleMsgHandler(EventBus.Instance).Execute((MessageEvent)v, w, y);
+            new TradeSaleMsgHandler(EventBus.Instance, Kernel.Get<ILogger>()).Execute((MessageEvent)v, w, y);
         };
 
         public static Action<string, IEvent, Action<IEventReponse>, Action<IEventErrorResponse>> MessageAction = (e, v, w, y) =>

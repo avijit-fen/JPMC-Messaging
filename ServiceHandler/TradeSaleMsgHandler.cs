@@ -14,9 +14,12 @@ namespace Messaging.ServiceHandler
     public class TradeSaleMsgHandler : IIntegrationHanlder<MessageEvent,MessageEventResponse,MessageEventErrorReponse>
     {
         IEventBus _eventBus { get; set; }
-        public TradeSaleMsgHandler(IEventBus eventBus) {
+        ILogger _logger { get; set; }
+        public TradeSaleMsgHandler(IEventBus eventBus, ILogger logger)
+        {
 
             _eventBus = eventBus;
+            _logger = logger;
         }
         public void Execute(MessageEvent args, Action<MessageEventResponse> callback, Action<MessageEventErrorReponse> errorCallBack)
         {
@@ -24,6 +27,7 @@ namespace Messaging.ServiceHandler
             var TradeDomainObject = helper.Parse(args);
             if (TradeDomainObject == null)
             {
+                _logger.Warn("Message not in correct format:" + args.Message);
                 errorCallBack(new MessageEventErrorReponse() { MsgCorelationId = args.MsgCorelationId, ErrorMessage = "Message Parsing Error" });
             }
             else {
