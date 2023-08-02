@@ -27,8 +27,8 @@ namespace Messaging.TestData
 
             for(int i=0;i < 100; i++)
             {
-                //var gen = rand.Next(0, 1);
-                var gen = 1;
+                var gen = rand.Next(0, 1);
+                //var gen = 1;
                 string s = msglist[gen].Replace("{{product}}", products[gen]).Replace("{{unitprice}}", unitprice[gen]).Replace("{{salesquantity}}", salesquantity[gen]).Replace("{{operation}}", operations[gen]);
                 list.Add(s);
 

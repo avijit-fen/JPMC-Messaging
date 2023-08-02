@@ -75,17 +75,18 @@ namespace Messaging
 
             int reportingInterval = int.Parse(Config.GetValue("reportingInterval"));
             int pausingInterval = int.Parse(Config.GetValue("PauseInterval"));
+            ReportEvent report;
 
             if (e.Count > 0 && e.Count % reportingInterval == 0)
             {
-                var r = new ReportEvent() { ServiceOperation = Constants.TRANSACTIONREPORT };
-                eventBus.Trigger(r, HandlerFactory.ReportAction, null, null);
+                report = new ReportEvent() { ServiceOperation = Constants.TRANSACTIONREPORT };
+                eventBus.Trigger(report, HandlerFactory.ReportAction, null, null);
             }
             if (e.Count == pausingInterval)
             {
                 logger.Info("Pausing");
-                var r = new ReportEvent() { ServiceOperation = Constants.TRANSACTIONADJUSTREPORT };
-                eventBus.Trigger(r, HandlerFactory.ReportAction, null, null);
+                report = new ReportEvent() { ServiceOperation = Constants.TRANSACTIONADJUSTREPORT };
+                eventBus.Trigger(report, HandlerFactory.ReportAction, null, null);
                 Thread.Sleep(-1);
                 
             }
